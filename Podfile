@@ -4,5 +4,6 @@ platform :ios, '7.0'
 
 target 'Rotten Tomatoes' do
  pod "AFNetworking"
+ pod "MBProgressHUD"
 end
 
