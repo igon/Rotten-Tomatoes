@@ -44,13 +44,11 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
                     print(json)
                     self.movies = json["movies"] as? [NSDictionary]
                     self.tableView.reloadData()
-                    self.indicatorView.hidden = true
                 } catch {
                     
                 }
             } else {
                 self.networkErrorView.hidden = false
-                self.indicatorView.hidden = true
             }
             
             self.tableView.dataSource = self
@@ -59,7 +57,12 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
             if (self.refreshControl.refreshing == true) {
                 self.refreshControl.endRefreshing()
             }
+            
+            self.indicatorView.stopAnimating()
+            
         }
+
+        self.indicatorView.startAnimating()        
     }
     
     override func didReceiveMemoryWarning() {
@@ -87,11 +90,11 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
         
         let imageUrl = NSURL(string: movie.valueForKeyPath("posters.thumbnail") as! String)
         let request = NSURLRequest(URL: imageUrl!)
-        cell.posterView.setImageWithURL(imageUrl!)
+       // cell.posterView.setImageWithURL(imageUrl!)
      
         cell.posterView.setImageWithURLRequest(request, placeholderImage: UIImage(named: "waiting"), success: { (urlRequest:NSURLRequest , urlResponse: NSHTTPURLResponse, image:UIImage) -> Void in
             
-                cell.posterView.image = image
+            cell.posterView.image = image
             
             }) { (urlRequest: NSURLRequest, urlResponse: NSHTTPURLResponse, error:NSError) -> Void in
                 
